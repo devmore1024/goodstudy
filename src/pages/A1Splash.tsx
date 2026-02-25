@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BouncingDots from '../components/BouncingDots'
 
+const TEACHER_IMG = '/images/teacher.png'
+
 export default function A1Splash() {
   const navigate = useNavigate()
   const [phase, setPhase] = useState(0) // 0=init, 1=bg, 2=logo, 3=text, 4=dots, 5=fadeout
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase(1), 50),    // bg fade in
-      setTimeout(() => setPhase(2), 300),   // logo scale in
-      setTimeout(() => setPhase(3), 900),   // text fade in
-      setTimeout(() => setPhase(4), 1300),  // bouncing dots
-      setTimeout(() => setPhase(5), 2000),  // fade out
+      setTimeout(() => setPhase(1), 50),
+      setTimeout(() => setPhase(2), 300),
+      setTimeout(() => setPhase(3), 900),
+      setTimeout(() => setPhase(4), 1300),
+      setTimeout(() => setPhase(5), 2000),
       setTimeout(() => navigate('/login', { replace: true }), 2500),
     ]
     return () => timers.forEach(clearTimeout)
@@ -20,28 +22,32 @@ export default function A1Splash() {
 
   return (
     <div
-      className={`h-full flex flex-col items-center justify-center bg-white transition-opacity duration-500 ${
+      className={`h-full flex flex-col items-center justify-center page-bg-splash relative overflow-hidden transition-opacity duration-500 ${
         phase >= 1 && phase < 5 ? 'opacity-100' : phase >= 5 ? 'opacity-0' : 'opacity-0'
       }`}
     >
-      {/* Logo */}
+      {/* Decorative background circles */}
+      <div className="deco-circle w-64 h-64 bg-brand/5 -top-20 -right-20" />
+      <div className="deco-circle w-48 h-48 bg-orange/5 -bottom-16 -left-16" />
+      <div className="deco-circle w-32 h-32 bg-blue/5 top-1/3 -left-10" />
+
+      {/* Teacher avatar */}
       <div
-        className={`w-20 h-20 rounded-2xl bg-gradient-to-br from-orange to-orange-dark flex items-center justify-center mb-5 transition-all duration-600 ${
-          phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+        className={`relative mb-6 transition-all duration-700 ${
+          phase >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
         }`}
       >
-        <svg width="44" height="44" viewBox="0 0 48 48" fill="white">
-          <circle cx="24" cy="18" r="10" />
-          <ellipse cx="24" cy="38" rx="16" ry="10" />
-          <circle cx="20" cy="16" r="2" fill="#FF7A45" />
-          <circle cx="28" cy="16" r="2" fill="#FF7A45" />
-          <path d="M 20 22 Q 24 26 28 22" stroke="#FF7A45" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        </svg>
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand/20 to-orange/15 blur-2xl scale-[2]" />
+        <img
+          src={TEACHER_IMG}
+          alt="小花老师"
+          className="relative w-28 h-28 rounded-3xl object-cover shadow-2xl ring-4 ring-white"
+        />
       </div>
 
       {/* App name */}
       <h1
-        className={`text-2xl font-bold text-gray-800 mb-2 transition-all duration-400 ${
+        className={`text-2xl font-bold text-gray-800 mb-1.5 transition-all duration-500 ${
           phase >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}
       >
@@ -50,7 +56,7 @@ export default function A1Splash() {
 
       {/* Tagline */}
       <p
-        className={`text-sm text-gray-400 mb-8 transition-all duration-400 ${
+        className={`text-sm text-gray-400 mb-8 tracking-wide transition-all duration-500 ${
           phase >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}
         style={{ transitionDelay: '100ms' }}

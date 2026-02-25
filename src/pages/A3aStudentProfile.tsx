@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TeacherAvatar from '../components/TeacherAvatar'
 import ChatMessageList from '../components/ChatMessageList'
+import ChatInputBar from '../components/ChatInputBar'
 import TagSelector from '../components/TagSelector'
 import VoicePrintBar from '../components/VoicePrintBar'
 import ProfileCard from '../components/ProfileCard'
@@ -34,29 +35,14 @@ export default function A3aStudentProfile() {
     setAvatarShrunk(true)
   }, [textInput, flow])
 
+  // Get the current input type from the last AI message
+  const lastAiMsg = [...flow.messages].reverse().find(m => m.role === 'ai')
+  const currentInputType = lastAiMsg?.inputType
+  const showTextBar = currentInputType === 'text' || (!currentInputType && !flow.isComplete && !flow.isTyping)
+
   const renderInput = useCallback((msg: ChatMessage) => {
-    if (msg.inputType === 'text') {
-      return (
-        <div className="flex gap-2 mt-3 animate-slide-up">
-          <input
-            type="text"
-            value={textInput}
-            onChange={e => setTextInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleTextSubmit()}
-            placeholder="请输入..."
-            className="flex-1 px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm outline-none focus:border-brand"
-            autoFocus
-          />
-          <button
-            onClick={handleTextSubmit}
-            disabled={!textInput.trim()}
-            className="px-4 py-2.5 rounded-xl bg-brand text-white text-sm font-medium disabled:bg-gray-200 disabled:text-gray-400"
-          >
-            发送
-          </button>
-        </div>
-      )
-    }
+    // Text input is now in the fixed bottom bar, skip it here
+    if (msg.inputType === 'text') return null
 
     if (msg.inputType === 'tag-select' && msg.inputConfig && 'type' in msg.inputConfig && msg.inputConfig.type === 'tag-select') {
       const config = msg.inputConfig
@@ -109,12 +95,16 @@ export default function A3aStudentProfile() {
     }
 
     return null
-  }, [textInput, handleTextSubmit, flow])
+  }, [flow])
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col page-bg-chat relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="deco-circle w-48 h-48 bg-brand/4 -top-16 -right-16" />
+      <div className="deco-circle w-32 h-32 bg-blue/4 bottom-40 -left-10" />
+
       {/* Teacher avatar - shrinkable */}
-      <div className={`flex justify-center transition-all duration-500 ${avatarShrunk ? 'py-2' : 'py-4'}`}>
+      <div className={`flex justify-center transition-all duration-500 relative z-10 ${avatarShrunk ? 'py-2' : 'py-4'}`}>
         <TeacherAvatar mode={avatarShrunk ? 'avatar' : 'upper'} />
       </div>
 
@@ -126,9 +116,23 @@ export default function A3aStudentProfile() {
         lastMessageAnimate
       />
 
+      {/* Fixed bottom input bar */}
+      {showTextBar && !showActions && (
+        <ChatInputBar
+          value={textInput}
+          onChange={setTextInput}
+          onSend={handleTextSubmit}
+          onVoiceResult={(text) => {
+            flow.submitAnswer(text)
+            setAvatarShrunk(true)
+          }}
+          disabled={flow.isTyping}
+        />
+      )}
+
       {/* Bottom actions */}
       {showActions && (
-        <div className="px-4 py-4 bg-white border-t border-gray-100 flex gap-3 animate-slide-up">
+        <div className="px-4 py-4 glass border-t border-gray-100/50 flex gap-3 animate-slide-up">
           <ActionButton
             variant="outline"
             fullWidth

@@ -25,20 +25,25 @@ export default function A2Login() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-white relative">
+    <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
       <Toast {...toast} onClose={() => setToast(t => ({ ...t, visible: false }))} />
 
-      {/* Top right avatar */}
-      <div className="absolute top-4 right-4">
-        <TeacherAvatar mode="avatar" />
-      </div>
+      {/* Decorative background */}
+      <div className="deco-circle w-72 h-72 bg-orange/5 -top-24 -right-24" />
+      <div className="deco-circle w-48 h-48 bg-brand/5 bottom-20 -left-20" />
 
-      <div className="flex-1 flex flex-col px-8 pt-20">
-        {/* Welcome text */}
-        <h1 className="text-2xl font-bold text-gray-800 mb-2 animate-fade-in">
+      {/* Content - vertically centered */}
+      <div className="flex-1 flex flex-col justify-center px-8 relative z-10">
+        {/* Avatar centered */}
+        <div className="flex justify-center mb-6 animate-fade-in">
+          <TeacherAvatar mode="upper" />
+        </div>
+
+        {/* Welcome text - centered */}
+        <h1 className="text-[26px] font-bold text-gray-800 mb-2 text-center animate-fade-in" style={{ animationDelay: '100ms' }}>
           欢迎来到小花老师
         </h1>
-        <p className="text-sm text-gray-400 mb-10 animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <p className="text-sm text-gray-400 mb-10 text-center animate-fade-in" style={{ animationDelay: '150ms' }}>
           登录后开启你的AI伴学之旅
         </p>
 
@@ -50,7 +55,7 @@ export default function A2Login() {
         </div>
 
         {/* Code input */}
-        <div className="mb-8 animate-fade-in" style={{ animationDelay: '300ms' }}>
+        <div className="mb-10 animate-fade-in" style={{ animationDelay: '300ms' }}>
           <CodeInput
             phoneValid={phoneValid}
             onCodeChange={setCode}
@@ -61,10 +66,10 @@ export default function A2Login() {
         <button
           onClick={handleLogin}
           disabled={!canLogin}
-          className={`w-full py-3.5 rounded-xl text-base font-semibold text-white transition-all duration-200 active:scale-95 mb-6 animate-fade-in ${
+          className={`w-full py-4 rounded-2xl text-base font-semibold text-white transition-all duration-200 active:scale-[0.97] mb-5 animate-fade-in ${
             canLogin
-              ? 'bg-gradient-to-r from-orange to-orange-dark shadow-lg shadow-orange/25'
-              : 'bg-orange-light'
+              ? 'bg-gradient-to-r from-orange to-orange-dark btn-glow-orange'
+              : 'bg-gray-200 text-gray-400 shadow-none'
           }`}
           style={{ animationDelay: '400ms' }}
         >
@@ -72,13 +77,13 @@ export default function A2Login() {
         </button>
 
         {/* Agreement */}
-        <div className="animate-fade-in" style={{ animationDelay: '500ms' }}>
+        <div className="flex justify-center animate-fade-in" style={{ animationDelay: '500ms' }}>
           <AgreementCheckbox checked={agreed} onChange={setAgreed} />
         </div>
       </div>
 
       {/* Bottom decoration */}
-      <div className="pb-8 flex justify-center">
+      <div className="pb-8 flex justify-center relative z-10">
         <p className="text-xs text-gray-300">小花老师 · 让学习更高效</p>
       </div>
     </div>

@@ -5,32 +5,20 @@ interface Props {
   className?: string
 }
 
-function AvatarSvg({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 100 100" className="drop-shadow-lg">
-      <defs>
-        <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#2BBB6E" />
-          <stop offset="100%" stopColor="#4A90D9" />
-        </linearGradient>
-      </defs>
-      <circle cx="50" cy="50" r="48" fill="url(#avatarGrad)" />
-      <circle cx="50" cy="38" r="16" fill="white" />
-      <ellipse cx="50" cy="75" rx="24" ry="18" fill="white" />
-      <circle cx="44" cy="36" r="3" fill="#333" />
-      <circle cx="56" cy="36" r="3" fill="#333" />
-      <path d="M 44 44 Q 50 50 56 44" stroke="#333" strokeWidth="2" fill="none" strokeLinecap="round" />
-    </svg>
-  )
-}
+const TEACHER_IMG = '/images/teacher.png'
 
 export default function TeacherAvatar({ mode, className = '' }: Props) {
   if (mode === 'hidden') return null
 
   if (mode === 'avatar') {
     return (
-      <div className={`w-12 h-12 rounded-full overflow-hidden animate-breathe ${className}`}>
-        <AvatarSvg size={48} />
+      <div className={`relative w-10 h-10 ${className}`}>
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand/30 to-blue/20 blur-md scale-125" />
+        <img
+          src={TEACHER_IMG}
+          alt="小花老师"
+          className="relative w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-md"
+        />
       </div>
     )
   }
@@ -38,9 +26,15 @@ export default function TeacherAvatar({ mode, className = '' }: Props) {
   if (mode === 'upper') {
     return (
       <div className={`flex flex-col items-center ${className}`}>
-        <div className="w-40 h-50 flex items-end justify-center">
-          <AvatarSvg size={120} />
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand/20 to-orange/15 blur-xl scale-150" />
+          <img
+            src={TEACHER_IMG}
+            alt="小花老师"
+            className="relative w-24 h-24 rounded-full object-cover ring-3 ring-white shadow-xl"
+          />
         </div>
+        <p className="mt-2 text-xs font-medium text-gray-500">小花老师</p>
       </div>
     )
   }
@@ -48,9 +42,17 @@ export default function TeacherAvatar({ mode, className = '' }: Props) {
   // full mode
   return (
     <div className={`flex flex-col items-center ${className}`}>
-      <div className="w-50 h-70 flex items-end justify-center">
-        <AvatarSvg size={180} />
+      <div className="relative">
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand/25 to-orange/20 blur-2xl scale-[1.8]" />
+        <div className="absolute inset-0 rounded-full animate-pulse-ring bg-brand/10 scale-[2]" />
+        <img
+          src={TEACHER_IMG}
+          alt="小花老师"
+          className="relative w-36 h-36 rounded-full object-cover ring-4 ring-white shadow-2xl animate-breathe"
+        />
       </div>
+      <p className="mt-3 text-sm font-semibold text-gray-700">小花老师</p>
+      <p className="text-xs text-gray-400">AI伴学 · 因材施教</p>
     </div>
   )
 }

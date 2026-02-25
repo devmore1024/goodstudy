@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Props {
   onComplete: () => void
@@ -8,6 +8,9 @@ interface Props {
 export default function VoicePrintBar({ onComplete, autoStart = true }: Props) {
   const [progress, setProgress] = useState(0)
   const [active, setActive] = useState(false)
+  const completedRef = useRef(false)
+  const onCompleteRef = useRef(onComplete)
+  onCompleteRef.current = onComplete
 
   useEffect(() => {
     if (autoStart && !active) {
@@ -17,18 +20,25 @@ export default function VoicePrintBar({ onComplete, autoStart = true }: Props) {
 
   useEffect(() => {
     if (!active) return
+    let completionTimer: ReturnType<typeof setTimeout> | null = null
     const timer = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(timer)
-          setTimeout(onComplete, 500)
+          if (!completedRef.current) {
+            completedRef.current = true
+            completionTimer = setTimeout(() => onCompleteRef.current(), 500)
+          }
           return 100
         }
         return prev + 2
       })
     }, 80)
-    return () => clearInterval(timer)
-  }, [active, onComplete])
+    return () => {
+      clearInterval(timer)
+      if (completionTimer) clearTimeout(completionTimer)
+    }
+  }, [active])
 
   return (
     <div className="w-full animate-slide-up">

@@ -24,14 +24,14 @@ export default function Toast({ message, type = 'info', visible, onClose }: Toas
   if (!visible && !show) return null
 
   const colors: Record<string, string> = {
-    success: 'bg-success',
-    error: 'bg-error',
-    info: 'bg-gray-800',
+    success: 'bg-success shadow-[0_4px_16px_rgba(82,196,26,0.3)]',
+    error: 'bg-error shadow-[0_4px_16px_rgba(255,77,79,0.3)]',
+    info: 'bg-gray-800 shadow-[0_4px_16px_rgba(0,0,0,0.15)]',
   }
 
   return (
     <div className="absolute top-16 left-0 right-0 flex justify-center z-50 pointer-events-none">
-      <div className={`px-6 py-2.5 rounded-full text-white text-sm font-medium shadow-lg transition-all duration-300 ${colors[type]} ${show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+      <div className={`px-6 py-2.5 rounded-2xl text-white text-sm font-medium transition-all duration-300 ${colors[type]} ${show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
         {message}
       </div>
     </div>

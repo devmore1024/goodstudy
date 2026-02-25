@@ -12,7 +12,7 @@ export default function VoiceInputButton({ options = [], onSelect }: Props) {
     <div className="relative">
       <button
         onClick={() => setShowOptions(!showOptions)}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center btn-glow-brand active:scale-90 transition-transform"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
@@ -23,12 +23,12 @@ export default function VoiceInputButton({ options = [], onSelect }: Props) {
       </button>
 
       {showOptions && options.length > 0 && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden min-w-[200px] animate-slide-up">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-white rounded-2xl shadow-xl border border-gray-100/60 overflow-hidden min-w-[200px] animate-slide-up card-glow">
           {options.map((opt, i) => (
             <button
               key={i}
               onClick={() => { onSelect(opt); setShowOptions(false) }}
-              className="w-full px-5 py-3.5 text-sm text-gray-700 hover:bg-brand-light text-left transition-colors border-b border-gray-50 last:border-0"
+              className="w-full px-5 py-3.5 text-sm text-gray-700 hover:bg-brand-light text-left transition-colors border-b border-gray-50 last:border-0 font-medium"
             >
               {opt}
             </button>

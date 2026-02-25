@@ -1,5 +1,4 @@
 import { useTypewriter } from '../hooks/useTypewriter'
-import BouncingDots from './BouncingDots'
 
 interface Props {
   content: string
@@ -7,6 +6,8 @@ interface Props {
   animate?: boolean
   onTypingComplete?: () => void
 }
+
+const TEACHER_IMG = '/images/teacher.png'
 
 export default function DialogBubble({ content, role, animate = false, onTypingComplete }: Props) {
   const { displayText, isComplete } = useTypewriter(
@@ -22,18 +23,26 @@ export default function DialogBubble({ content, role, animate = false, onTypingC
 
   if (role === 'ai') {
     return (
-      <div className="flex items-start gap-2 animate-slide-left">
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-brand to-blue flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-            <circle cx="12" cy="10" r="5" />
-            <ellipse cx="12" cy="20" rx="8" ry="5" />
-          </svg>
+      <div className="flex items-start gap-2.5 animate-slide-left">
+        {/* Teacher avatar */}
+        <div className="flex-shrink-0 relative">
+          <div className="absolute inset-0 rounded-full bg-brand/15 blur-sm scale-125" />
+          <img
+            src={TEACHER_IMG}
+            alt="小花老师"
+            className="relative w-9 h-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+          />
         </div>
-        <div className="max-w-[75%] bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
-          <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
-            {text}
-            {animate && !isComplete && <span className="inline-block w-0.5 h-4 bg-brand ml-0.5 animate-pulse align-middle" />}
-          </p>
+        {/* Bubble */}
+        <div className="max-w-[78%] relative">
+          {/* Triangle pointer */}
+          <div className="absolute left-0 top-3 -translate-x-1.5 w-3 h-3 bg-white rotate-45 rounded-sm shadow-sm" />
+          <div className="relative bg-white rounded-2xl rounded-tl-md px-4 py-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-gray-100/60">
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+              {text}
+              {animate && !isComplete && <span className="inline-block w-0.5 h-4 bg-brand ml-0.5 animate-pulse align-middle" />}
+            </p>
+          </div>
         </div>
       </div>
     )
@@ -41,8 +50,12 @@ export default function DialogBubble({ content, role, animate = false, onTypingC
 
   return (
     <div className="flex items-start gap-2 justify-end animate-slide-right">
-      <div className="max-w-[75%] bg-brand-light rounded-2xl rounded-tr-sm px-4 py-3">
-        <p className="text-sm text-gray-800 leading-relaxed">{text}</p>
+      <div className="max-w-[78%] relative">
+        {/* Triangle pointer */}
+        <div className="absolute right-0 top-3 translate-x-1.5 w-3 h-3 bg-gradient-to-br from-brand-light to-brand-light rotate-45 rounded-sm" />
+        <div className="relative bg-gradient-to-br from-brand-light to-[#d4f5e2] rounded-2xl rounded-tr-md px-4 py-3 shadow-[0_2px_8px_rgba(43,187,110,0.1)]">
+          <p className="text-sm text-gray-700 leading-relaxed">{text}</p>
+        </div>
       </div>
     </div>
   )

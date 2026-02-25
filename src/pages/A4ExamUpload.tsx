@@ -14,6 +14,8 @@ import BouncingDots from '../components/BouncingDots'
 import { mockOcrResults } from '../mock/ocrResults'
 import { subjects } from '../mock/studentData'
 
+const TEACHER_IMG = '/images/teacher.png'
+
 export default function A4ExamUpload() {
   const navigate = useNavigate()
   const [state, setState] = useState<A4State>('entry')
@@ -68,10 +70,14 @@ export default function A4ExamUpload() {
   // Entry state
   if (state === 'entry') {
     return (
-      <div className="h-full flex flex-col bg-gradient-to-b from-brand-light/30 via-white to-white">
+      <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
         <NavigationBar showBack rightAction={{ label: '跳过', onClick: () => navigate('/home/student') }} />
 
-        <div className="flex-1 flex flex-col items-center px-6 pt-6">
+        {/* Decorative background */}
+        <div className="deco-circle w-56 h-56 bg-orange/5 -top-16 -right-16" />
+        <div className="deco-circle w-40 h-40 bg-brand/5 bottom-32 -left-12" />
+
+        <div className="flex-1 flex flex-col items-center px-6 pt-4 relative z-10">
           <TeacherAvatar mode="full" />
 
           <div className="mt-6 w-full">
@@ -130,7 +136,7 @@ export default function A4ExamUpload() {
   // Info form state
   if (state === 'info') {
     return (
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col page-bg-chat">
         <NavigationBar title="试卷信息" rightAction={{ label: '取消', onClick: () => setState('entry') }} />
         <div className="flex-1">
           <ExamInfoForm onSubmit={(_info: ExamInfo) => setIsOcrRunning(true)} />
@@ -138,10 +144,17 @@ export default function A4ExamUpload() {
 
         {/* OCR Progress overlay */}
         {isOcrRunning && (
-          <div className="absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20">
-            <TeacherAvatar mode="avatar" className="mb-6" />
+          <div className="absolute inset-0 glass flex flex-col items-center justify-center z-20">
+            <div className="relative mb-6">
+              <div className="absolute inset-0 rounded-full bg-brand/15 blur-xl scale-[2] animate-pulse" />
+              <img
+                src={TEACHER_IMG}
+                alt="小花老师"
+                className="relative w-20 h-20 rounded-full object-cover ring-3 ring-white shadow-xl animate-breathe"
+              />
+            </div>
             <p className="text-base font-semibold text-gray-800 mb-4">正在识别试卷...</p>
-            <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+            <div className="w-52 h-2.5 bg-gray-100 rounded-full overflow-hidden mb-2 shadow-inner">
               <div
                 className="h-full bg-gradient-to-r from-brand to-blue rounded-full transition-all duration-200"
                 style={{ width: `${Math.min(ocrProgress, 100)}%` }}
@@ -160,26 +173,35 @@ export default function A4ExamUpload() {
   // OCR Result state
   if (state === 'ocr-result') {
     return (
-      <div className="h-full flex flex-col bg-gray-50">
+      <div className="h-full flex flex-col page-bg-chat">
         <NavigationBar title="识别结果" />
 
         {/* Stats */}
-        <div className="px-4 py-3 bg-white border-b border-gray-100">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-800">
-              得分：<span className="text-brand font-bold text-lg">{stats.totalScore}</span>
-              <span className="text-gray-400">/{stats.fullScore}</span>
+        <div className="mx-4 mt-2 mb-3 p-4 bg-white rounded-2xl card-glow">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-sm font-medium text-gray-700">
+              得分：<span className="text-brand font-bold text-xl">{stats.totalScore}</span>
+              <span className="text-gray-400 text-sm">/{stats.fullScore}</span>
             </span>
           </div>
           <div className="flex gap-4 text-xs">
-            <span className="text-success">正确 {stats.correct} 题</span>
-            <span className="text-error">错误 {stats.wrong} 题</span>
-            <span className="text-warning">待确认 {stats.uncertain} 题</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-success" />
+              <span className="text-gray-600">正确 {stats.correct} 题</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-error" />
+              <span className="text-gray-600">错误 {stats.wrong} 题</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-warning" />
+              <span className="text-gray-600">待确认 {stats.uncertain} 题</span>
+            </span>
           </div>
         </div>
 
         {/* Question list */}
-        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-3 space-y-2.5">
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-4 pb-3 space-y-2.5">
           {questions.map(q => (
             <QuestionCard
               key={q.id}
@@ -190,7 +212,7 @@ export default function A4ExamUpload() {
         </div>
 
         {/* Confirm */}
-        <div className="px-4 py-4 bg-white border-t border-gray-100">
+        <div className="px-4 py-4 glass border-t border-gray-100/50">
           <ActionButton variant="primary" fullWidth onClick={handleConfirmOcr}>
             确认结果
           </ActionButton>
@@ -203,7 +225,7 @@ export default function A4ExamUpload() {
   if (state === 'multi-subject') {
     const remaining = subjects.filter(s => !uploadedSubjects.includes(s))
     return (
-      <div className="h-full flex flex-col bg-gray-50">
+      <div className="h-full flex flex-col page-bg-chat">
         <NavigationBar title="上传更多科目" />
 
         <div className="flex-1 px-4 py-6">

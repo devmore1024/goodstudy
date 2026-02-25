@@ -3,6 +3,8 @@ import type { ChatMessage } from '../types'
 import DialogBubble from './DialogBubble'
 import BouncingDots from './BouncingDots'
 
+const TEACHER_IMG = '/images/teacher.png'
+
 interface Props {
   messages: ChatMessage[]
   isTyping: boolean
@@ -33,14 +35,16 @@ export default function ChatMessageList({ messages, isTyping, renderInput, lastM
         )
       })}
       {isTyping && (
-        <div className="flex items-start gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand to-blue flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-              <circle cx="12" cy="10" r="5" />
-              <ellipse cx="12" cy="20" rx="8" ry="5" />
-            </svg>
+        <div className="flex items-start gap-2.5">
+          <div className="flex-shrink-0 relative">
+            <div className="absolute inset-0 rounded-full bg-brand/15 blur-sm scale-125" />
+            <img
+              src={TEACHER_IMG}
+              alt="小花老师"
+              className="relative w-9 h-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+            />
           </div>
-          <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+          <div className="bg-white rounded-2xl rounded-tl-md px-4 py-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-gray-100/60">
             <BouncingDots />
           </div>
         </div>

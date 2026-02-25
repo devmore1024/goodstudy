@@ -19,6 +19,8 @@ export function useChatFlow(config: ChatFlowConfig) {
   const [isTyping, setIsTyping] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const profileRef = useRef<Record<string, string>>({})
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const processingRef = useRef(false)
 
   const getStep = (id: string) => config.steps.find(s => s.id === id)
 
@@ -39,7 +41,13 @@ export function useChatFlow(config: ChatFlowConfig) {
     setCurrentStepId(stepId)
     setIsTyping(true)
 
-    setTimeout(() => {
+    // Clear any pending timer to prevent duplicate messages (React StrictMode)
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null
+      processingRef.current = false
       const content = replaceVars(step.aiMessage)
       setMessages(prev => [...prev, createMessage('ai', content, step)])
       setIsTyping(false)
@@ -47,6 +55,11 @@ export function useChatFlow(config: ChatFlowConfig) {
   }, [config.steps])
 
   const start = useCallback(() => {
+    // Clear any pending timer from a previous start call (React StrictMode double-mount)
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
     setMessages([])
     setIsComplete(false)
     profileRef.current = {}
@@ -55,8 +68,15 @@ export function useChatFlow(config: ChatFlowConfig) {
 
   const submitAnswer = useCallback((answer: string) => {
     if (!currentStepId) return
+    // Prevent duplicate submissions (e.g. VoicePrintBar effect firing twice)
+    if (processingRef.current) return
+    processingRef.current = true
+
     const step = getStep(currentStepId)
-    if (!step) return
+    if (!step) {
+      processingRef.current = false
+      return
+    }
 
     if (step.fieldKey) {
       profileRef.current[step.fieldKey] = answer
@@ -66,8 +86,16 @@ export function useChatFlow(config: ChatFlowConfig) {
 
     const nextId = typeof step.nextStep === 'function' ? step.nextStep(answer) : step.nextStep
     if (nextId) {
-      setTimeout(() => advanceToStep(nextId), 500)
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+      }
+      timerRef.current = setTimeout(() => {
+        timerRef.current = null
+        processingRef.current = false
+        advanceToStep(nextId)
+      }, 500)
     } else {
+      processingRef.current = false
       setIsComplete(true)
     }
   }, [currentStepId, advanceToStep])
