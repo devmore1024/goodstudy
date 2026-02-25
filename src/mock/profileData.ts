@@ -4,6 +4,7 @@ export interface FamilyMember {
   id: string
   name: string
   role: 'parent' | 'student'
+  relation?: string // 称谓：爸爸、妈妈、爷爷、奶奶等
   isAdmin?: boolean
   grade?: string
   voiceEnrolled: boolean
@@ -13,8 +14,8 @@ export interface FamilyMember {
 }
 
 export const mockFamilyMembers: FamilyMember[] = [
-  { id: '1', name: '张爸爸', role: 'parent', isAdmin: true, voiceEnrolled: true, voiceEnrollDate: '2025-12-01', voiceQuality: 'excellent' },
-  { id: '2', name: '张妈妈', role: 'parent', voiceEnrolled: true, voiceEnrollDate: '2025-12-01', voiceQuality: 'excellent' },
+  { id: '1', name: '张爸爸', role: 'parent', relation: '爸爸', isAdmin: true, voiceEnrolled: true, voiceEnrollDate: '2025-12-01', voiceQuality: 'excellent' },
+  { id: '2', name: '张妈妈', role: 'parent', relation: '妈妈', voiceEnrolled: true, voiceEnrollDate: '2025-12-01', voiceQuality: 'excellent' },
   { id: '3', name: '张小明', role: 'student', grade: '三年级', voiceEnrolled: true, voiceEnrollDate: '2025-12-03', voiceQuality: 'good' },
   { id: '4', name: '张小红', role: 'student', grade: '一年级', voiceEnrolled: false },
 ]
@@ -22,6 +23,8 @@ export const mockFamilyMembers: FamilyMember[] = [
 export interface UserProfile {
   name: string
   role: 'student' | 'parent'
+  relation?: string // 称谓：爸爸、妈妈等（家长模式）
+  isAdmin?: boolean // 是否为管理员（家长模式）
   grade?: string
   phone: string
   avatar?: string
@@ -37,6 +40,8 @@ export const mockStudentProfile: UserProfile = {
 export const mockParentProfile: UserProfile = {
   name: '张爸爸',
   role: 'parent',
+  relation: '爸爸',
+  isAdmin: true,
   phone: '138****1234',
 }
 

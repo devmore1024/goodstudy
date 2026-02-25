@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BottomTabBar from '../components/BottomTabBar'
-import { mockStudentProfile } from '../mock/profileData'
+import { mockStudentProfile, mockParentProfile } from '../mock/profileData'
 
 const profileTabs = [
   { key: 'home', label: '首页', icon: 'home', route: '/home/student' },
@@ -10,19 +10,47 @@ const profileTabs = [
   { key: 'profile', label: '我的', icon: 'profile', route: '/me' },
 ]
 
-const menuItems = [
-  { id: 'family', icon: '👨‍👩‍👧‍👦', label: '家庭成员管理', route: '/family' },
-  { id: 'voice', icon: '🎙', label: '声纹管理', route: '/voiceprint', badge: false },
-  { id: 'settings', icon: '📚', label: '学习设置', route: '/settings' },
-  { id: 'about', icon: 'ℹ️', label: '关于我们', route: '/about' },
+// 板块 A —— 管理与会员（仅家长模式显示）
+const menuGroupA = [
+  { id: 'family', icon: '👨‍👩‍👧‍👦', label: '家庭成员管理', route: '/family' as string | null },
+  { id: 'voice', icon: '🎙', label: '声纹管理', route: '/voiceprint' as string | null, badge: false },
+  { id: 'vip', icon: '👑', label: '升级会员', route: null },
+]
+
+// 板块 B —— 通用信息（学生+家长都显示）
+const menuGroupB = [
+  { id: 'settings', icon: '📚', label: '学习设置', route: '/settings' as string | null },
+  { id: 'qa', icon: '💬', label: '个性化问答', route: null as string | null },
+  { id: 'feedback', icon: '📝', label: '咨询与反馈', route: null },
+  { id: 'agreement', icon: '📋', label: '协议与公告', route: null },
+  { id: 'about', icon: 'ℹ️', label: '关于我们', route: '/about' as string | null },
 ]
 
 export default function F1Profile() {
   const navigate = useNavigate()
-  const profile = mockStudentProfile
   const [isStudentMode, setIsStudentMode] = useState(true)
+  const profile = isStudentMode ? mockStudentProfile : mockParentProfile
   const [showSwitchDialog, setShowSwitchDialog] = useState(false)
   const [showLogoutDialog, setShowLogoutDialog] = useState(false)
+  const [toastText, setToastText] = useState('')
+
+  const showToast = (text: string) => {
+    setToastText(text)
+    setTimeout(() => setToastText(''), 1500)
+  }
+
+  const handleMenuClick = (item: { id: string; route: string | null }) => {
+    if (item.route) {
+      // 学习设置需要传递当前模式
+      if (item.id === 'settings') {
+        navigate(`${item.route}?mode=${isStudentMode ? 'student' : 'parent'}`)
+      } else {
+        navigate(item.route)
+      }
+    } else {
+      showToast('即将上线')
+    }
+  }
 
   const modeBg = isStudentMode ? 'bg-blue/10' : 'bg-brand/10'
   const modeText = isStudentMode ? '学生模式' : '家长模式'
@@ -63,9 +91,17 @@ export default function F1Profile() {
             {profile.name.charAt(0)}
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-800">{profile.name}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-bold text-gray-800">{profile.name}</h2>
+              {!isStudentMode && profile.isAdmin && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-brand text-white leading-none">管理员</span>
+              )}
+            </div>
             <p className="text-sm text-gray-400 mt-0.5">
-              {profile.grade ? `${profile.grade} · ` : ''}{profile.role === 'student' ? '学生' : '家长'}
+              {isStudentMode
+                ? `${profile.grade ? `${profile.grade} · ` : ''}学生`
+                : `${profile.relation ? `${profile.relation} · ` : ''}家长`
+              }
             </p>
             <p className="text-sm text-gray-400">手机号 {profile.phone}</p>
           </div>
@@ -74,22 +110,47 @@ export default function F1Profile() {
         {/* Divider */}
         <div className="border-t border-dashed border-gray-200 my-5" />
 
-        {/* Menu list */}
+        {/* Menu Group A - 管理与会员（仅家长模式） */}
+        {!isStudentMode && (
+          <div className="bg-white rounded-2xl overflow-hidden shadow-sm mb-5">
+            {menuGroupA.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={() => handleMenuClick(item)}
+                className={`w-full flex items-center justify-between px-5 py-5 active:bg-gray-50 transition-colors ${
+                  idx < menuGroupA.length - 1 ? 'border-b border-gray-100' : ''
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">{item.icon}</span>
+                  <span className="text-sm text-gray-700">{item.label}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {'badge' in item && item.badge && <div className="w-2 h-2 rounded-full bg-error" />}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Menu Group B - 通用信息（学生+家长都显示） */}
         <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
-          {menuItems.map((item, idx) => (
+          {menuGroupB.map((item, idx) => (
             <button
               key={item.id}
-              onClick={() => navigate(item.route)}
-              className={`w-full flex items-center justify-between px-4 py-4 active:bg-gray-50 transition-colors ${
-                idx < menuItems.length - 1 ? 'border-b border-gray-50' : ''
+              onClick={() => handleMenuClick(item)}
+              className={`w-full flex items-center justify-between px-5 py-5 active:bg-gray-50 transition-colors ${
+                idx < menuGroupB.length - 1 ? 'border-b border-gray-100' : ''
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className="text-base">{item.icon}</span>
+                <span className="text-lg">{item.icon}</span>
                 <span className="text-sm text-gray-700">{item.label}</span>
               </div>
               <div className="flex items-center gap-2">
-                {item.badge && <div className="w-2 h-2 rounded-full bg-error" />}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="9 18 15 12 9 6"/>
                 </svg>
@@ -112,17 +173,17 @@ export default function F1Profile() {
       {/* Switch mode dialog */}
       {showSwitchDialog && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-3xl p-6 mx-6 w-full max-w-sm animate-scale-in">
-            <h3 className="text-lg font-bold text-gray-800 text-center mb-2">确认切换到{targetMode}？</h3>
-            <p className="text-sm text-gray-500 text-center mb-6">
+          <div className="bg-white rounded-3xl p-7 mx-6 w-full max-w-sm animate-scale-in">
+            <h3 className="text-lg font-bold text-gray-800 text-center mb-4">确认切换到{targetMode}？</h3>
+            <p className="text-sm text-gray-500 text-center mb-8">
               切换后将进入{targetMode === '家长模式' ? '家长' : '学生'}视角，
               {targetMode === '家长模式' ? '可查看学习报告和管理设置' : '进入学习界面'}
             </p>
-            <div className="flex gap-3">
-              <button onClick={() => setShowSwitchDialog(false)} className="flex-1 py-2.5 rounded-xl bg-gray-100 text-sm text-gray-600 font-medium active:scale-[0.97] transition-all">
+            <div className="flex gap-4">
+              <button onClick={() => setShowSwitchDialog(false)} className="flex-1 py-3 rounded-xl bg-gray-100 text-sm text-gray-600 font-medium active:scale-[0.97] transition-all">
                 取消
               </button>
-              <button onClick={handleSwitchConfirm} className="flex-1 py-2.5 rounded-xl bg-brand text-white text-sm font-semibold active:scale-[0.97] transition-all">
+              <button onClick={handleSwitchConfirm} className="flex-1 py-3 rounded-xl bg-brand text-white text-sm font-semibold active:scale-[0.97] transition-all">
                 确认切换
               </button>
             </div>
@@ -130,17 +191,26 @@ export default function F1Profile() {
         </div>
       )}
 
+      {/* Toast */}
+      {toastText && (
+        <div className="absolute inset-x-0 top-20 z-50 flex justify-center pointer-events-none">
+          <div className="bg-black/70 text-white text-sm px-5 py-2.5 rounded-full">
+            {toastText}
+          </div>
+        </div>
+      )}
+
       {/* Logout dialog */}
       {showLogoutDialog && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-3xl p-6 mx-6 w-full max-w-sm animate-scale-in">
-            <h3 className="text-lg font-bold text-gray-800 text-center mb-2">确认退出登录？</h3>
-            <p className="text-sm text-gray-500 text-center mb-6">退出后需重新验证手机号才能使用</p>
-            <div className="flex gap-3">
-              <button onClick={() => setShowLogoutDialog(false)} className="flex-1 py-2.5 rounded-xl bg-gray-100 text-sm text-gray-600 font-medium active:scale-[0.97] transition-all">
+          <div className="bg-white rounded-3xl p-7 mx-6 w-full max-w-sm animate-scale-in">
+            <h3 className="text-lg font-bold text-gray-800 text-center mb-4">确认退出登录？</h3>
+            <p className="text-sm text-gray-500 text-center mb-8">退出后需重新验证手机号才能使用</p>
+            <div className="flex gap-4">
+              <button onClick={() => setShowLogoutDialog(false)} className="flex-1 py-3 rounded-xl bg-gray-100 text-sm text-gray-600 font-medium active:scale-[0.97] transition-all">
                 取消
               </button>
-              <button onClick={handleLogoutConfirm} className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-orange to-orange-dark text-white text-sm font-semibold active:scale-[0.97] transition-all">
+              <button onClick={handleLogoutConfirm} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange to-orange-dark text-white text-sm font-semibold active:scale-[0.97] transition-all">
                 确认退出
               </button>
             </div>
