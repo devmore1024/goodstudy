@@ -21,6 +21,7 @@ import F1Profile from './pages/F1Profile'
 import F2FamilyMembers from './pages/F2FamilyMembers'
 import F3VoicePrint from './pages/F3VoicePrint'
 import F4LearningSettings from './pages/F4LearningSettings'
+import G0ComponentDemo from './pages/G0ComponentDemo'
 import PlaceholderPage from './pages/PlaceholderPage'
 
 export default function App() {
@@ -53,6 +54,8 @@ export default function App() {
         <Route path="/family" element={<F2FamilyMembers />} />
         <Route path="/voiceprint" element={<F3VoicePrint />} />
         <Route path="/settings" element={<F4LearningSettings />} />
+        {/* G - Global Components Demo */}
+        <Route path="/demo/components" element={<G0ComponentDemo />} />
         {/* Placeholder routes */}
         <Route path="/daily" element={<PlaceholderPage title="每日学习 (D1)" />} />
         <Route path="/plan" element={<PlaceholderPage title="学习计划" />} />
