@@ -21,6 +21,7 @@ import F1Profile from './pages/F1Profile'
 import F2FamilyMembers from './pages/F2FamilyMembers'
 import F3VoicePrint from './pages/F3VoicePrint'
 import F4LearningSettings from './pages/F4LearningSettings'
+import D1Knowledge from './pages/D1Knowledge'
 import D2PhotoJudge from './pages/D2PhotoJudge'
 import D2PhotoJudgeHistory from './pages/D2PhotoJudgeHistory'
 import D3QA from './pages/D3QA'
@@ -59,6 +60,8 @@ export default function App() {
         <Route path="/voiceprint" element={<F3VoicePrint />} />
         <Route path="/settings" element={<F4LearningSettings />} />
         {/* D - Core Learning */}
+        <Route path="/knowledge" element={<D1Knowledge />} />
+        <Route path="/knowledge/:pointId" element={<D1Knowledge />} />
         <Route path="/photo-judge" element={<D2PhotoJudge />} />
         <Route path="/photo-judge/history" element={<D2PhotoJudgeHistory />} />
         <Route path="/qa" element={<D3QA />} />
@@ -67,7 +70,7 @@ export default function App() {
         <Route path="/demo/components" element={<G0ComponentDemo />} />
         {/* Placeholder routes */}
         <Route path="/plan" element={<PlaceholderPage title="学习计划" />} />
-        <Route path="/knowledge" element={<PlaceholderPage title="知识课堂 (D1)" />} />
+        {/* /knowledge moved to D - Core Learning section */}
         <Route path="/test" element={<C3TestSetup />} />
         <Route path="/achievement" element={<PlaceholderPage title="成就" />} />
         <Route path="/about" element={<PlaceholderPage title="关于我们" />} />
