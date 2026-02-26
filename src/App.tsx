@@ -66,9 +66,8 @@ export default function App() {
         {/* G - Global Components Demo */}
         <Route path="/demo/components" element={<G0ComponentDemo />} />
         {/* Placeholder routes */}
-        <Route path="/daily" element={<PlaceholderPage title="每日学习 (D1)" />} />
         <Route path="/plan" element={<PlaceholderPage title="学习计划" />} />
-        <Route path="/knowledge" element={<PlaceholderPage title="知识点浏览" />} />
+        <Route path="/knowledge" element={<PlaceholderPage title="知识课堂 (D1)" />} />
         <Route path="/test" element={<C3TestSetup />} />
         <Route path="/achievement" element={<PlaceholderPage title="成就" />} />
         <Route path="/about" element={<PlaceholderPage title="关于我们" />} />

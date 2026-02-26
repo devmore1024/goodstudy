@@ -168,6 +168,7 @@ export default function C2aDailyPlan() {
                     {/* Start button for current/pending */}
                     {(isCurrent || task.status === 'pending') && (
                       <button
+                        onClick={() => navigate('/knowledge')}
                         className={`w-full mt-2 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] ${
                           isCurrent
                             ? 'bg-blue text-white shadow-md'

@@ -4,9 +4,12 @@ export interface LearningTask {
   id: string
   subject: string
   title: string
+  taskType: string      // 知识点精讲 / 每日一练 / 拍照判题 / 听写练习 etc.
   completed: boolean
   duration?: number    // minutes
-  accuracy?: number    // percentage
+  accuracy?: number    // percentage (正确率)
+  mastery?: number     // percentage (掌握度)
+  route: string        // target route when clicked
 }
 
 export interface QuickEntry {
@@ -17,12 +20,18 @@ export interface QuickEntry {
   color: string
 }
 
+export const subjectColors: Record<string, string> = {
+  '数学': '#4A90D9',
+  '语文': '#E84D3D',
+  '英语': '#2BBB6E',
+}
+
 export const mockTasks: LearningTask[] = [
-  { id: '1', subject: '语文', title: '古诗词背诵', completed: true, duration: 12, accuracy: 95 },
-  { id: '2', subject: '数学', title: '分数加减法', completed: true, duration: 18, accuracy: 88 },
-  { id: '3', subject: '英语', title: 'Unit3 单词', completed: false },
-  { id: '4', subject: '数学', title: '应用题练习', completed: false },
-  { id: '5', subject: '语文', title: '阅读理解', completed: false },
+  { id: '1', subject: '数学', title: '分数加减法', taskType: '知识点精讲', completed: true, mastery: 85, route: '/knowledge' },
+  { id: '2', subject: '数学', title: '口算练习', taskType: '每日一练', completed: true, accuracy: 90, route: '/knowledge' },
+  { id: '3', subject: '数学', title: '应用题专项', taskType: '拍照判题', completed: false, route: '/photo-judge' },
+  { id: '4', subject: '语文', title: '古诗词背诵', taskType: '知识点精讲', completed: false, route: '/knowledge' },
+  { id: '5', subject: '英语', title: '英语单词听写', taskType: '听写练习', completed: false, route: '/knowledge' },
 ]
 
 export const quickEntries: QuickEntry[] = [
@@ -31,6 +40,13 @@ export const quickEntries: QuickEntry[] = [
   { id: '3', icon: 'camera', label: '拍照判题', route: '/photo-judge', color: '#FF7A45' },
   { id: '4', icon: 'test', label: '测评', route: '/test/setup', color: '#9B59B6' },
   { id: '5', icon: 'report', label: '学习报告', route: '/report', color: '#F5A623' },
+]
+
+export const parentQuickEntries: QuickEntry[] = [
+  { id: '1', icon: 'plan', label: '学习计划', route: '/plan', color: '#4A90D9' },
+  { id: '2', icon: 'report', label: '学习报告', route: '/report', color: '#2BBB6E' },
+  { id: '3', icon: 'trend', label: '成绩趋势', route: '/report/trend', color: '#FF7A45' },
+  { id: '4', icon: 'subject', label: '学科详情', route: '/report/subject', color: '#9B59B6' },
 ]
 
 // B2 Parent Home mock data

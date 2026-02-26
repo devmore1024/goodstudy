@@ -164,7 +164,7 @@ export default function E2WeeklyReport() {
                   <span className="text-xs text-gray-400 w-4">{wp.rank}.</span>
                   <span className="text-sm text-gray-700">{wp.name}</span>
                 </div>
-                <button className="text-xs text-brand font-medium">▶ 练习</button>
+                <button onClick={() => navigate('/knowledge')} className="text-xs text-brand font-medium">▶ 练习</button>
               </div>
               <div className="flex items-center gap-3 mt-1.5 ml-6">
                 <span className="text-[10px] text-gray-400">正确率 {wp.accuracy}%</span>

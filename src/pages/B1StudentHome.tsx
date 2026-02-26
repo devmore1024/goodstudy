@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TeacherAvatar from '../components/TeacherAvatar'
 import ChatInputBar from '../components/ChatInputBar'
-import { quickEntries } from '../mock/homeData'
+import { quickEntries, mockTasks, subjectColors } from '../mock/homeData'
 
 function getGreeting(): string {
   const h = new Date().getHours()
@@ -31,6 +31,7 @@ export default function B1StudentHome() {
   const greeting = getGreeting()
   const dayOfWeek = getDayOfWeek()
   const studentName = '小明'
+  const completedCount = mockTasks.filter(t => t.completed).length
 
   return (
     <div className="h-full flex flex-col page-bg-chat relative overflow-hidden">
@@ -64,9 +65,59 @@ export default function B1StudentHome() {
         </div>
 
         {/* Teacher avatar area */}
-        <div className="flex flex-col items-center py-8">
+        <div className="flex flex-col items-center pt-8 pb-4">
           <TeacherAvatar mode="full" />
           <p className="text-xs text-gray-400 mt-3">"小花老师，你好"</p>
+        </div>
+
+        {/* 今日学习计划 */}
+        <div className="mx-4 mb-3 bg-white rounded-2xl card-glow overflow-hidden">
+          <div className="px-4 pt-3 pb-2 flex items-center justify-between">
+            <h3 className="text-sm font-bold text-gray-800">
+              📖 今日学习计划 ({completedCount}/{mockTasks.length})
+            </h3>
+          </div>
+          <div className="px-4 pb-3 space-y-0">
+            {mockTasks.map(task => (
+              <button
+                key={task.id}
+                onClick={() => navigate(task.route)}
+                className="w-full text-left py-2.5 border-b border-gray-50 last:border-0 active:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-start gap-2">
+                  {/* Checkbox */}
+                  <span className="mt-0.5 text-base leading-none">
+                    {task.completed ? (
+                      <span className="text-brand">☑</span>
+                    ) : (
+                      <span className="text-gray-300">☐</span>
+                    )}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {/* Subject tag */}
+                      <span
+                        className="text-[10px] px-1.5 py-0.5 rounded font-medium text-white flex-shrink-0"
+                        style={{ backgroundColor: subjectColors[task.subject] || '#9CA3AF' }}
+                      >
+                        {task.subject}
+                      </span>
+                      <span className={`text-sm ${task.completed ? 'text-gray-400 line-through' : 'text-gray-800'}`}>
+                        {task.title}
+                      </span>
+                      <span className="text-xs text-gray-400">· {task.taskType}</span>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {task.completed
+                        ? `已完成${task.mastery ? ` · 掌握度 ${task.mastery}%` : ''}${task.accuracy ? ` · 正确率 ${task.accuracy}%` : ''}`
+                        : '未开始'
+                      }
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

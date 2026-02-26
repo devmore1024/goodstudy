@@ -1,18 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BottomTabBar from '../components/BottomTabBar'
 import ChatInputBar from '../components/ChatInputBar'
-import { mockChildrenData, aiWeeklyReport } from '../mock/homeData'
+import { mockChildrenData, aiWeeklyReport, parentQuickEntries } from '../mock/homeData'
 import type { ChildData, SubjectScore } from '../mock/homeData'
 
 const TEACHER_IMG = '/images/teacher.png'
 
-const parentTabs = [
-  { key: 'home', label: '首页', icon: 'home', route: '/home/parent' },
-  { key: 'plan', label: '学习计划', icon: 'plan', route: '/plan' },
-  { key: 'report', label: '学习报告', icon: 'report', route: '/report', badge: true },
-  { key: 'profile', label: '我的', icon: 'profile', route: '/me' },
-]
+const parentBubbleEmojis: Record<string, string> = {
+  plan: '📋',
+  report: '📊',
+  trend: '📈',
+  subject: '📖',
+}
 
 const subjectColors: Record<string, string> = {
   '语文': '#FF7A45',
@@ -363,6 +362,8 @@ export default function B2ParentHome() {
     ? `${child.name}今天完成了全部任务，表现很棒！`
     : `${child.name}今天完成了${child.completedTasks}项学习任务，学习了${child.todayMinutes}分钟。`
 
+  const [voiceInput, setVoiceInput] = useState('')
+
   return (
     <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
       {/* Decorative circles */}
@@ -377,38 +378,50 @@ export default function B2ParentHome() {
             <h1 className="text-lg font-bold text-gray-800">{greeting}，{child.name}妈妈</h1>
             <p className="text-sm text-gray-400 mt-0.5">{formatDate()}</p>
           </div>
-          {/* Floating teacher avatar */}
-          <div className="relative flex-shrink-0">
-            <button
-              onClick={() => { setShowChatPanel(true); setShowBubble(false) }}
-              className="relative active:scale-90 transition-transform"
-            >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand/20 to-orange/15 blur-md scale-125 animate-breathe" />
-              <img
-                src={TEACHER_IMG}
-                alt="小花老师"
-                className="relative w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-lg"
-              />
-              <div className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-error flex items-center justify-center">
-                <span className="text-[8px] text-white font-bold">1</span>
-              </div>
-            </button>
-            {/* Speech bubble */}
-            {showBubble && !showChatPanel && (
-              <div className="absolute top-14 right-0 w-52 animate-slide-up">
-                <div className="bg-white rounded-2xl rounded-tr-md p-3 shadow-lg border border-gray-100">
-                  <p className="text-xs text-gray-600 leading-relaxed">{broadcastText}</p>
-                  <button
-                    onClick={() => { setShowChatPanel(true); setShowBubble(false) }}
-                    className="mt-1.5 text-[10px] text-brand font-medium"
-                  >
-                    点击对话了解更多 →
-                  </button>
+          <div className="flex items-center gap-2.5 flex-shrink-0">
+            {/* Floating teacher avatar */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowChatPanel(true); setShowBubble(false) }}
+                className="relative active:scale-90 transition-transform"
+              >
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand/20 to-orange/15 blur-md scale-125 animate-breathe" />
+                <img
+                  src={TEACHER_IMG}
+                  alt="小花老师"
+                  className="relative w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-lg"
+                />
+                <div className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-error flex items-center justify-center">
+                  <span className="text-[8px] text-white font-bold">1</span>
                 </div>
-                {/* Triangle */}
-                <div className="absolute -top-1.5 right-4 w-3 h-3 bg-white border-l border-t border-gray-100 transform rotate-45" />
-              </div>
-            )}
+              </button>
+              {/* Speech bubble */}
+              {showBubble && !showChatPanel && (
+                <div className="absolute top-14 right-0 w-52 animate-slide-up">
+                  <div className="bg-white rounded-2xl rounded-tr-md p-3 shadow-lg border border-gray-100">
+                    <p className="text-xs text-gray-600 leading-relaxed">{broadcastText}</p>
+                    <button
+                      onClick={() => { setShowChatPanel(true); setShowBubble(false) }}
+                      className="mt-1.5 text-[10px] text-brand font-medium"
+                    >
+                      点击对话了解更多 →
+                    </button>
+                  </div>
+                  {/* Triangle */}
+                  <div className="absolute -top-1.5 right-4 w-3 h-3 bg-white border-l border-t border-gray-100 transform rotate-45" />
+                </div>
+              )}
+            </div>
+            {/* Settings icon */}
+            <button
+              onClick={() => navigate('/me')}
+              className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center shadow-sm active:scale-90 transition-transform"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -560,8 +573,30 @@ export default function B2ParentHome() {
         <div className="h-4" />
       </div>
 
-      {/* Bottom tab bar */}
-      <BottomTabBar tabs={parentTabs} />
+      {/* Function bubbles — horizontally scrollable */}
+      <div className="px-2 pb-2 relative z-10">
+        <div className="flex gap-2.5 overflow-x-auto scrollbar-hide py-1 px-2">
+          {parentQuickEntries.map(entry => (
+            <button
+              key={entry.id}
+              onClick={() => navigate(entry.route)}
+              className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-all border border-gray-100/60"
+              style={{ backgroundColor: `${entry.color}12`, color: entry.color }}
+            >
+              <span>{parentBubbleEmojis[entry.icon] || '📌'}</span>
+              <span>{entry.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Voice / text input bar */}
+      <ChatInputBar
+        value={voiceInput}
+        onChange={setVoiceInput}
+        onSend={() => { setVoiceInput('') }}
+        placeholder="问小花老师..."
+      />
 
       {/* AI Chat Panel overlay */}
       {showChatPanel && (

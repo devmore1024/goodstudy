@@ -168,7 +168,7 @@ export default function E1DailyReport() {
                       <div className="mt-2 pt-2 border-t border-gray-50 animate-slide-up">
                         <p className="text-xs text-gray-500">正确 {Math.round(item.questions * item.accuracy / 100)} 题，错误 {item.questions - Math.round(item.questions * item.accuracy / 100)} 题</p>
                         {item.weakPoint && (
-                          <button className="mt-1 text-xs text-brand font-medium">查看知识点: {item.weakPoint} →</button>
+                          <button onClick={(e) => { e.stopPropagation(); navigate('/knowledge') }} className="mt-1 text-xs text-brand font-medium">去练习: {item.weakPoint} →</button>
                         )}
                       </div>
                     )}
