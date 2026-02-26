@@ -21,9 +21,9 @@ const menuGroupB = [
 ]
 
 export default function F1Profile() {
-  const { homePath } = useMode()
+  const { mode, setMode, homePath } = useMode()
   const navigate = useNavigate()
-  const [isStudentMode, setIsStudentMode] = useState(true)
+  const isStudentMode = mode === 'student'
   const profile = isStudentMode ? mockStudentProfile : mockParentProfile
   const [showSwitchDialog, setShowSwitchDialog] = useState(false)
   const [showLogoutDialog, setShowLogoutDialog] = useState(false)
@@ -52,8 +52,10 @@ export default function F1Profile() {
   const targetMode = isStudentMode ? '家长模式' : '学生模式'
 
   const handleSwitchConfirm = () => {
-    setIsStudentMode(!isStudentMode)
+    const newMode = isStudentMode ? 'parent' : 'student'
+    setMode(newMode)
     setShowSwitchDialog(false)
+    navigate(newMode === 'parent' ? '/home/parent' : '/home/student', { replace: true })
   }
 
   const handleLogoutConfirm = () => {
