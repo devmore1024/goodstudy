@@ -22,6 +22,9 @@ import F2FamilyMembers from './pages/F2FamilyMembers'
 import F3VoicePrint from './pages/F3VoicePrint'
 import F4LearningSettings from './pages/F4LearningSettings'
 import D2PhotoJudge from './pages/D2PhotoJudge'
+import D2PhotoJudgeHistory from './pages/D2PhotoJudgeHistory'
+import D3QA from './pages/D3QA'
+import D3QAHistory from './pages/D3QAHistory'
 import G0ComponentDemo from './pages/G0ComponentDemo'
 import PlaceholderPage from './pages/PlaceholderPage'
 
@@ -57,12 +60,14 @@ export default function App() {
         <Route path="/settings" element={<F4LearningSettings />} />
         {/* D - Core Learning */}
         <Route path="/photo-judge" element={<D2PhotoJudge />} />
+        <Route path="/photo-judge/history" element={<D2PhotoJudgeHistory />} />
+        <Route path="/qa" element={<D3QA />} />
+        <Route path="/qa/history" element={<D3QAHistory />} />
         {/* G - Global Components Demo */}
         <Route path="/demo/components" element={<G0ComponentDemo />} />
         {/* Placeholder routes */}
         <Route path="/daily" element={<PlaceholderPage title="每日学习 (D1)" />} />
         <Route path="/plan" element={<PlaceholderPage title="学习计划" />} />
-        <Route path="/qa" element={<PlaceholderPage title="AI答疑 (D3)" />} />
         <Route path="/knowledge" element={<PlaceholderPage title="知识点浏览" />} />
         <Route path="/test" element={<C3TestSetup />} />
         <Route path="/achievement" element={<PlaceholderPage title="成就" />} />

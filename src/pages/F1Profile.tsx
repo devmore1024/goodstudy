@@ -1,14 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BottomTabBar from '../components/BottomTabBar'
+import NavigationBar from '../components/NavigationBar'
 import { mockStudentProfile, mockParentProfile } from '../mock/profileData'
-
-const profileTabs = [
-  { key: 'home', label: '首页', icon: 'home', route: '/home/student' },
-  { key: 'daily', label: '每日学习', icon: 'study', route: '/daily' },
-  { key: 'report', label: '学习报告', icon: 'report', route: '/report' },
-  { key: 'profile', label: '我的', icon: 'profile', route: '/me' },
-]
 
 // 板块 A —— 管理与会员（仅家长模式显示）
 const menuGroupA = [
@@ -67,6 +60,7 @@ export default function F1Profile() {
 
   return (
     <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
+      <NavigationBar title="设置" onBack={() => navigate('/home/student')} />
       <div className="flex-1 overflow-y-auto scrollbar-hide relative z-10 px-5 pt-4 pb-4">
         {/* Mode indicator */}
         <div className={`${modeBg} rounded-2xl p-4 flex items-center justify-between`}>
@@ -167,8 +161,6 @@ export default function F1Profile() {
           退出登录
         </button>
       </div>
-
-      <BottomTabBar tabs={profileTabs} />
 
       {/* Switch mode dialog */}
       {showSwitchDialog && (

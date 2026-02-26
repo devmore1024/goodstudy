@@ -1,17 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BottomTabBar from '../components/BottomTabBar'
+import NavigationBar from '../components/NavigationBar'
 import ActionButton from '../components/ActionButton'
 import { mockMonthlyReport } from '../mock/reportData'
 
 const TEACHER_IMG = '/images/teacher.png'
-
-const reportTabs = [
-  { key: 'home', label: '首页', icon: 'home', route: '/home/student' },
-  { key: 'daily', label: '每日学习', icon: 'study', route: '/daily' },
-  { key: 'report', label: '学习报告', icon: 'report', route: '/report' },
-  { key: 'profile', label: '我的', icon: 'profile', route: '/me' },
-]
 
 function SubTab({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
   return (
@@ -74,15 +67,7 @@ export default function E3MonthlyReport() {
 
   return (
     <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
-      {/* Top nav */}
-      <div className="flex items-center justify-between px-4 py-3 glass border-b border-gray-100/30 relative z-10">
-        <span className="text-base font-semibold text-gray-800">学习报告</span>
-        <button onClick={() => navigate('/me')} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-          </svg>
-        </button>
-      </div>
+      <NavigationBar title="学习报告" onBack={() => navigate('/home/student')} />
 
       {/* Sub tabs */}
       <div className="flex border-b border-gray-100 px-4 glass">
@@ -204,7 +189,6 @@ export default function E3MonthlyReport() {
         <div className="h-4" />
       </div>
 
-      <BottomTabBar tabs={reportTabs} />
     </div>
   )
 }

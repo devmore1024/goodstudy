@@ -48,6 +48,90 @@ export const mockD2Questions: D2Question[] = [
   },
 ]
 
+/* ─── D2 判题历史记录 ─── */
+
+export interface JudgeRecord {
+  id: string
+  date: string          // e.g. '2026-02-25 16:30'
+  subject: string
+  totalQuestions: number
+  correctCount: number
+  accuracy: number
+  questions: D2Question[]
+}
+
+export const mockJudgeHistory: JudgeRecord[] = [
+  {
+    id: 'jr-1',
+    date: '2026-02-26 15:20',
+    subject: '数学',
+    totalQuestions: 4,
+    correctCount: 3,
+    accuracy: 75,
+    questions: [
+      { id: 1, content: '3/4 + 1/2 =', correctAnswer: '5/4', userAnswer: '5/4', isCorrect: true },
+      { id: 2, content: '5 × 3 - 7 =', correctAnswer: '8', userAnswer: '8', isCorrect: true },
+      { id: 3, content: '12 ÷ 4 + 2 =', correctAnswer: '5', userAnswer: '4', isCorrect: false, explanation: { steps: ['先算除法：12 ÷ 4 = 3', '再算加法：3 + 2 = 5'], knowledgePoint: '四则运算优先级' } },
+      { id: 4, content: '8 - 3/5 =', correctAnswer: '37/5', userAnswer: '37/5', isCorrect: true },
+    ],
+  },
+  {
+    id: 'jr-2',
+    date: '2026-02-25 19:45',
+    subject: '数学',
+    totalQuestions: 3,
+    correctCount: 3,
+    accuracy: 100,
+    questions: [
+      { id: 1, content: '7 + 8 =', correctAnswer: '15', userAnswer: '15', isCorrect: true },
+      { id: 2, content: '24 ÷ 6 =', correctAnswer: '4', userAnswer: '4', isCorrect: true },
+      { id: 3, content: '9 × 3 =', correctAnswer: '27', userAnswer: '27', isCorrect: true },
+    ],
+  },
+  {
+    id: 'jr-3',
+    date: '2026-02-24 20:10',
+    subject: '数学',
+    totalQuestions: 5,
+    correctCount: 3,
+    accuracy: 60,
+    questions: [
+      { id: 1, content: '1/3 + 1/6 =', correctAnswer: '1/2', userAnswer: '1/2', isCorrect: true },
+      { id: 2, content: '15 - 2/3 =', correctAnswer: '43/3', userAnswer: '13/3', isCorrect: false, explanation: { steps: ['先将15化为分数：15 = 45/3', '再算减法：45/3 - 2/3 = 43/3'], knowledgePoint: '整数与分数的混合运算' } },
+      { id: 3, content: '4 × 5 + 3 =', correctAnswer: '23', userAnswer: '23', isCorrect: true },
+      { id: 4, content: '36 ÷ 9 - 2 =', correctAnswer: '2', userAnswer: '2', isCorrect: true },
+      { id: 5, content: '(7 + 3) × 2 =', correctAnswer: '20', userAnswer: '13', isCorrect: false, explanation: { steps: ['先算括号内：7 + 3 = 10', '再算乘法：10 × 2 = 20'], knowledgePoint: '括号的运算优先级' } },
+    ],
+  },
+  {
+    id: 'jr-4',
+    date: '2026-02-23 17:30',
+    subject: '数学',
+    totalQuestions: 4,
+    correctCount: 4,
+    accuracy: 100,
+    questions: [
+      { id: 1, content: '6 × 7 =', correctAnswer: '42', userAnswer: '42', isCorrect: true },
+      { id: 2, content: '100 - 37 =', correctAnswer: '63', userAnswer: '63', isCorrect: true },
+      { id: 3, content: '45 ÷ 5 =', correctAnswer: '9', userAnswer: '9', isCorrect: true },
+      { id: 4, content: '28 + 35 =', correctAnswer: '63', userAnswer: '63', isCorrect: true },
+    ],
+  },
+  {
+    id: 'jr-5',
+    date: '2026-02-22 16:00',
+    subject: '数学',
+    totalQuestions: 3,
+    correctCount: 1,
+    accuracy: 33,
+    questions: [
+      { id: 1, content: '2/5 + 3/10 =', correctAnswer: '7/10', userAnswer: '5/15', isCorrect: false, explanation: { steps: ['先通分：2/5 = 4/10', '再算加法：4/10 + 3/10 = 7/10'], knowledgePoint: '分数通分' } },
+      { id: 2, content: '8 × 9 - 12 =', correctAnswer: '60', userAnswer: '60', isCorrect: true },
+      { id: 3, content: '3/4 × 2/3 =', correctAnswer: '1/2', userAnswer: '6/12', isCorrect: false, explanation: { steps: ['分子相乘：3 × 2 = 6', '分母相乘：4 × 3 = 12', '约分：6/12 = 1/2'], knowledgePoint: '分数乘法与约分' } },
+    ],
+  },
+]
+
 export const mockTeacherReplies: Record<string, string> = {
   '第1题': '第1题 3/4 + 1/2，需要先通分哦！1/2 = 2/4，所以 3/4 + 2/4 = 5/4，你答对啦～',
   '第2题': '第2题 5 × 3 - 7，先算乘法 5×3=15，再算减法 15-7=8，没问题！',

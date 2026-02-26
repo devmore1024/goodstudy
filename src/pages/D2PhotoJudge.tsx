@@ -38,7 +38,7 @@ function toast(msg: string) {
 }
 
 /* ─── Step 1: Camera ─── */
-function CameraStep({ onCapture, onBack }: { onCapture: () => void; onBack: () => void }) {
+function CameraStep({ onCapture, onBack, onHistory }: { onCapture: () => void; onBack: () => void; onHistory: () => void }) {
   const [flash, setFlash] = useState(false)
 
   const handleCapture = () => {
@@ -63,6 +63,12 @@ function CameraStep({ onCapture, onBack }: { onCapture: () => void; onBack: () =
           <button onClick={() => toast('闪光灯切换')} className="p-1.5">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </button>
+          <button onClick={onHistory} className="p-1.5">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
             </svg>
           </button>
           <button onClick={() => toast('拍照帮助：将试卷平放，确保光线充足')} className="p-1.5">
@@ -530,7 +536,7 @@ export default function D2PhotoJudge() {
 
   switch (step) {
     case 'camera':
-      return <CameraStep onCapture={() => setStep('crop')} onBack={() => navigate(-1)} />
+      return <CameraStep onCapture={() => setStep('crop')} onBack={() => navigate(-1)} onHistory={() => navigate('/photo-judge/history')} />
     case 'crop':
       return (
         <CropStep

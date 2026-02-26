@@ -26,11 +26,11 @@ export const mockTasks: LearningTask[] = [
 ]
 
 export const quickEntries: QuickEntry[] = [
-  { id: '1', icon: 'camera', label: '拍照判题', route: '/photo-judge', color: '#FF7A45' },
+  { id: '1', icon: 'book', label: '知识课堂', route: '/knowledge', color: '#2BBB6E' },
   { id: '2', icon: 'chat', label: '答疑', route: '/qa', color: '#4A90D9' },
-  { id: '3', icon: 'book', label: '知识点', route: '/knowledge', color: '#2BBB6E' },
+  { id: '3', icon: 'camera', label: '拍照判题', route: '/photo-judge', color: '#FF7A45' },
   { id: '4', icon: 'test', label: '测评', route: '/test/setup', color: '#9B59B6' },
-  { id: '5', icon: 'trophy', label: '成就', route: '/achievement', color: '#F5A623' },
+  { id: '5', icon: 'report', label: '学习报告', route: '/report', color: '#F5A623' },
 ]
 
 // B2 Parent Home mock data
