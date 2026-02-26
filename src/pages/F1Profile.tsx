@@ -55,7 +55,6 @@ export default function F1Profile() {
     const newMode = isStudentMode ? 'parent' : 'student'
     setMode(newMode)
     setShowSwitchDialog(false)
-    navigate(newMode === 'parent' ? '/home/parent' : '/home/student', { replace: true })
   }
 
   const handleLogoutConfirm = () => {
