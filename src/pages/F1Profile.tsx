@@ -58,6 +58,7 @@ export default function F1Profile() {
   }
 
   const handleLogoutConfirm = () => {
+    document.cookie = 'goodstudy_mode=;path=/;max-age=0'
     navigate('/')
   }
 

@@ -235,20 +235,11 @@ export default function C5TestResult() {
           })}
         </div>
 
-        {/* Action buttons */}
-        <div className="mt-6 space-y-3">
+        {/* Action button */}
+        <div className="mt-6">
           <ActionButton variant="primary" fullWidth onClick={() => navigate('/plan/create')}>
             生成学习计划 →
           </ActionButton>
-          <ActionButton variant="outline" fullWidth>
-            查看知识图谱
-          </ActionButton>
-          <button
-            onClick={() => navigate('/home/student')}
-            className="w-full text-center text-sm text-gray-400 py-2"
-          >
-            返回首页
-          </button>
         </div>
       </div>
     </div>

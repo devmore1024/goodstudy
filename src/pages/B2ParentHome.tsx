@@ -9,8 +9,6 @@ const TEACHER_IMG = '/images/teacher.png'
 const parentBubbleEmojis: Record<string, string> = {
   plan: '📋',
   report: '📊',
-  trend: '📈',
-  subject: '📖',
 }
 
 const subjectColors: Record<string, string> = {

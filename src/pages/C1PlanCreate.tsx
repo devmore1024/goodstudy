@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import NavigationBar from '../components/NavigationBar'
 import TeacherAvatar from '../components/TeacherAvatar'
 import DialogBubble from '../components/DialogBubble'
@@ -11,6 +12,7 @@ const subjectColorMap: Record<string, string> = {
 }
 
 export default function C1PlanCreate() {
+  const { homePath } = useMode()
   const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [selectedDirections, setSelectedDirections] = useState<Record<string, string[]>>({})
@@ -283,13 +285,22 @@ export default function C1PlanCreate() {
                   </div>
                 </div>
               </div>
-              <ActionButton
-                variant="gradient"
-                fullWidth
-                onClick={() => navigate('/plan/overview')}
-              >
-                确认生成计划 →
-              </ActionButton>
+              <div className="flex gap-3">
+                <ActionButton
+                  variant="outline"
+                  fullWidth
+                  onClick={() => setStep(4)}
+                >
+                  变更计划
+                </ActionButton>
+                <ActionButton
+                  variant="gradient"
+                  fullWidth
+                  onClick={() => navigate(homePath)}
+                >
+                  确认生成 →
+                </ActionButton>
+              </div>
             </div>
           )}
         </div>

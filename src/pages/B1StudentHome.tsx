@@ -21,6 +21,7 @@ const bubbleEmojis: Record<string, string> = {
   chat: '💬',
   camera: '📷',
   test: '📝',
+  plan: '📋',
   report: '📊',
 }
 
