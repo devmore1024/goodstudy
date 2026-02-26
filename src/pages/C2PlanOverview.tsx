@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NavigationBar from '../components/NavigationBar'
-import BottomTabBar from '../components/BottomTabBar'
 import { weekPlanBlocks } from '../mock/planData'
 
 const TEACHER_IMG = '/images/teacher.png'
@@ -12,13 +11,6 @@ const subjectColors: Record<string, string> = {
 
 const days = ['一', '二', '三', '四', '五', '六', '日']
 const hours = Array.from({ length: 13 }, (_, i) => i + 8) // 8-20
-
-const parentTabs = [
-  { key: 'home', label: '首页', icon: 'home', route: '/home/parent' },
-  { key: 'plan', label: '计划', icon: 'plan', route: '/plan/overview' },
-  { key: 'report', label: '报告', icon: 'report', route: '/report' },
-  { key: 'profile', label: '我的', icon: 'profile', route: '/me' },
-]
 
 export default function C2PlanOverview() {
   const navigate = useNavigate()
@@ -165,7 +157,6 @@ export default function C2PlanOverview() {
         </button>
       </div>
 
-      <BottomTabBar tabs={parentTabs} />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import NavigationBar from '../components/NavigationBar'
 import ActionButton from '../components/ActionButton'
 import { mockMonthlyReport } from '../mock/reportData'
@@ -56,6 +57,7 @@ function RankTrendChart({ data }: { data: { month: string; percentile: number }[
 }
 
 export default function E3MonthlyReport() {
+  const { homePath } = useMode()
   const navigate = useNavigate()
   const report = mockMonthlyReport
   const [expandedSubject, setExpandedSubject] = useState<string | null>(null)
@@ -67,7 +69,7 @@ export default function E3MonthlyReport() {
 
   return (
     <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
-      <NavigationBar title="学习报告" onBack={() => navigate('/home/student')} />
+      <NavigationBar title="学习报告" onBack={() => navigate(homePath)} />
 
       {/* Sub tabs */}
       <div className="flex border-b border-gray-100 px-4 glass">

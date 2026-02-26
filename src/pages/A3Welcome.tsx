@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import TeacherAvatar from '../components/TeacherAvatar'
 import DialogBubble from '../components/DialogBubble'
 import ChatInputBar from '../components/ChatInputBar'
@@ -9,6 +10,7 @@ type Phase = 'greet' | 'greet-done' | 'ask' | 'ask-done' | 'confirm' | 'confirm-
 
 export default function A3Welcome() {
   const navigate = useNavigate()
+  const { setMode, homePath } = useMode()
   const [phase, setPhase] = useState<Phase>('greet')
   const [identity, setIdentity] = useState<string>('')
   const [showBubble1, setShowBubble1] = useState(false)
@@ -40,7 +42,9 @@ export default function A3Welcome() {
   }, [phase, identity, navigate])
 
   const handleIdentitySelect = (text: string) => {
-    const option = text.includes('学生') || text.includes('同学') ? '我是学生' : '我是家长'
+    const isStudent = text.includes('学生') || text.includes('同学')
+    const option = isStudent ? '我是学生' : '我是家长'
+    setMode(isStudent ? 'student' : 'parent')
     setIdentity(option)
     setUserBubble(text)
     setTextInput('')
@@ -64,7 +68,7 @@ export default function A3Welcome() {
       {/* Skip button */}
       <div className="flex justify-end px-4 py-2 relative z-10">
         <button
-          onClick={() => navigate('/home/student')}
+          onClick={() => navigate(homePath)}
           className="text-sm text-gray-400 px-3 py-1 rounded-lg hover:bg-white/50 transition-colors"
         >
           跳过

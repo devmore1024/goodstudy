@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import type { A4State, ExamInfo, QuestionResult } from '../types'
 import TeacherAvatar from '../components/TeacherAvatar'
 import DialogBubble from '../components/DialogBubble'
@@ -18,6 +19,7 @@ const TEACHER_IMG = '/images/teacher.png'
 
 export default function A4ExamUpload() {
   const navigate = useNavigate()
+  const { homePath } = useMode()
   const [state, setState] = useState<A4State>('entry')
   const [ocrProgress, setOcrProgress] = useState(0)
   const [isOcrRunning, setIsOcrRunning] = useState(false)
@@ -71,7 +73,7 @@ export default function A4ExamUpload() {
   if (state === 'entry') {
     return (
       <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
-        <NavigationBar showBack rightAction={{ label: '跳过', onClick: () => navigate('/home/student') }} />
+        <NavigationBar showBack rightAction={{ label: '跳过', onClick: () => navigate(homePath) }} />
 
         {/* Decorative background */}
         <div className="deco-circle w-56 h-56 bg-orange/5 -top-16 -right-16" />
@@ -102,7 +104,7 @@ export default function A4ExamUpload() {
             <ActionButton
               variant="outline"
               fullWidth
-              onClick={() => navigate('/home/student')}
+              onClick={() => navigate(homePath)}
             >
               我没有试卷
             </ActionButton>

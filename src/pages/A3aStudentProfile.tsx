@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import TeacherAvatar from '../components/TeacherAvatar'
 import ChatMessageList from '../components/ChatMessageList'
 import ChatInputBar from '../components/ChatInputBar'
@@ -13,6 +14,7 @@ import type { ChatMessage } from '../types'
 
 export default function A3aStudentProfile() {
   const navigate = useNavigate()
+  const { setMode } = useMode()
   const flow = useChatFlow(studentProfileFlow)
   const [showActions, setShowActions] = useState(false)
   const [textInput, setTextInput] = useState('')
@@ -143,7 +145,7 @@ export default function A3aStudentProfile() {
           <ActionButton
             variant="primary"
             fullWidth
-            onClick={() => navigate('/home/student')}
+            onClick={() => { setMode('student'); navigate('/home/student') }}
           >
             直接开始
           </ActionButton>

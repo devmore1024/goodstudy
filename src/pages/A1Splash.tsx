@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import BouncingDots from '../components/BouncingDots'
 
 const TEACHER_IMG = '/images/teacher.png'
 
 export default function A1Splash() {
   const navigate = useNavigate()
+  const { mode } = useMode()
   const [phase, setPhase] = useState(0) // 0=init, 1=bg, 2=logo, 3=text, 4=dots, 5=fadeout
 
   useEffect(() => {
+    // If user has a saved mode cookie, go directly to the corresponding home page
+    const hasModeCookie = document.cookie.includes('goodstudy_mode=')
+    const target = hasModeCookie
+      ? (mode === 'parent' ? '/home/parent' : '/home/student')
+      : '/login'
+
     const timers = [
       setTimeout(() => setPhase(1), 50),
       setTimeout(() => setPhase(2), 300),
       setTimeout(() => setPhase(3), 900),
       setTimeout(() => setPhase(4), 1300),
       setTimeout(() => setPhase(5), 2000),
-      setTimeout(() => navigate('/login', { replace: true }), 2500),
+      setTimeout(() => navigate(target, { replace: true }), 2500),
     ]
     return () => timers.forEach(clearTimeout)
-  }, [navigate])
+  }, [navigate, mode])
 
   return (
     <div

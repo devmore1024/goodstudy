@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import NavigationBar from '../components/NavigationBar'
 import { mockDailyReport } from '../mock/reportData'
 
@@ -73,6 +74,7 @@ function PieChart({ data }: { data: { name: string; percent: number; color: stri
 
 export default function E1DailyReport() {
   const navigate = useNavigate()
+  const { homePath } = useMode()
   const report = mockDailyReport
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [commentExpanded, setCommentExpanded] = useState(false)
@@ -81,7 +83,7 @@ export default function E1DailyReport() {
 
   return (
     <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
-      <NavigationBar title="学习报告" onBack={() => navigate('/home/student')} />
+      <NavigationBar title="学习报告" onBack={() => navigate(homePath)} />
 
       {/* Sub tabs */}
       <div className="flex border-b border-gray-100 px-4 glass">

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import TeacherAvatar from '../components/TeacherAvatar'
 import ChatMessageList from '../components/ChatMessageList'
 import ChatInputBar from '../components/ChatInputBar'
@@ -15,6 +16,7 @@ import type { ChatMessage } from '../types'
 
 export default function A3bParentProfile() {
   const navigate = useNavigate()
+  const { setMode } = useMode()
   const flow = useChatFlow(parentProfileFlow)
   const [showActions, setShowActions] = useState(false)
   const [textInput, setTextInput] = useState('')
@@ -149,7 +151,7 @@ export default function A3bParentProfile() {
           <ActionButton
             variant="primary"
             fullWidth
-            onClick={() => navigate('/home/parent')}
+            onClick={() => { setMode('parent'); navigate('/home/parent') }}
           >
             进入家长首页
           </ActionButton>

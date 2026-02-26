@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMode } from '../contexts/ModeContext'
 import NavigationBar from '../components/NavigationBar'
 import { mockStudentProfile, mockParentProfile } from '../mock/profileData'
 
@@ -20,6 +21,7 @@ const menuGroupB = [
 ]
 
 export default function F1Profile() {
+  const { homePath } = useMode()
   const navigate = useNavigate()
   const [isStudentMode, setIsStudentMode] = useState(true)
   const profile = isStudentMode ? mockStudentProfile : mockParentProfile
@@ -60,7 +62,7 @@ export default function F1Profile() {
 
   return (
     <div className="h-full flex flex-col page-bg-warm relative overflow-hidden">
-      <NavigationBar title="设置" onBack={() => navigate('/home/student')} />
+      <NavigationBar title="设置" onBack={() => navigate(homePath)} />
       <div className="flex-1 overflow-y-auto scrollbar-hide relative z-10 px-5 pt-4 pb-4">
         {/* Mode indicator */}
         <div className={`${modeBg} rounded-2xl p-4 flex items-center justify-between`}>
