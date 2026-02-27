@@ -1,8 +1,8 @@
 import type { ChildInfo } from '../types'
 
 export const mockChildren: ChildInfo[] = [
-  { id: '1', name: '小明', grade: '初二（8年级）' },
-  { id: '2', name: '小红', grade: '小学五年级' },
+  { id: '1', name: '小明', grade: '小学（三年级）' },
+  { id: '2', name: '小红', grade: '小学（五年级）' },
 ]
 
 export const gradeGroups = [
@@ -12,7 +12,7 @@ export const gradeGroups = [
   },
   {
     label: '初中',
-    tags: ['七年级', '八年级', '九年级'],
+    tags: ['初一', '初二', '初三'],
   },
   {
     label: '高中',

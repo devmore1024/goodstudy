@@ -93,13 +93,7 @@ export const parentProfileFlow: ChatFlowConfig = {
   steps: [
     {
       id: 'welcome',
-      aiMessage: '欢迎您！我是小花老师，接下来我会帮您建立家长档案。',
-      inputType: 'text',
-      nextStep: 'ask-role',
-    },
-    {
-      id: 'ask-role',
-      aiMessage: '请问您是孩子的？',
+      aiMessage: '欢迎您！我是小花老师～请问您是孩子的爸爸、妈妈，还是其他家人呢？',
       inputType: 'tag-select',
       inputConfig: { type: 'tag-select', tags: parentRoles },
       nextStep: 'voiceprint',
